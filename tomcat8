@@ -1,0 +1,22 @@
+Tomcat 运行慢
+
+（2）At least one JAR was scanned for TLDs yet contained no TLDs
+
+
+
+The warning comes up because Tomcat scans all Jars for TLDs (Tagging Library Definitions).
+
+Step1: To see which JARs are throwing up this warning, insert he following line to tomcat/conf/logging.properties
+
+org.apache.jasper.servlet.TldScanner.level = FINE
+
+Now you should be able to see warnings with a detail of which JARs are causing the intial warning
+
+Step2 Since skipping unneeded JARs during scanning can improve startup time and JSP compilation time, we will skip un-needed JARS in the catalina.properties file. You have two options here -
+
+    List all the JARs under the tomcat.util.scan.StandardJarScanFilter.jarsToSkip. But this can get cumbersome if you have a lot jars or if the jars keep changing.
+    Alternatively, Insert tomcat.util.scan.StandardJarScanFilter.jarsToSkip=* to skip all the jars
+
+You should now not see the above warnings and if you have a considerably large application, it should save you significant time in deploying an application.
+
+Note: Tested in Tomcat8
